@@ -6,10 +6,20 @@ class Transfer
     @sender = sender
     @receiver = receiver
     @amount = amount
-    @status = pending
+    @status = "pending"
   end
 
 def valid?
-  true if @sender.instance_of? BankAccount && @receiver.instance_of? BankAccount
-  
+  true if @sender.valid? && @receiver.valid?
+end
+
+def execute_transaction
+  if self.valid? && @status = "pending"
+    @sender.balance -= @amount
+    @receiver.balance += @amount
+    @status = "complete"
+  else
+    @status = "rejected"
+  end
+end
 end
